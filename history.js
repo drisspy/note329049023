@@ -91,13 +91,17 @@ function showPopup(url) {
 
 function downloadNoteAsTxt() {
     const note = document.getElementById('note').value;
-    const blob = new Blob([note], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'note.txt';
-    a.click();
-    URL.revokeObjectURL(url);
+    if (note) {
+        const blob = new Blob([note], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'note.txt';
+        a.click();
+        URL.revokeObjectURL(url);
+    } else {
+        alert('No note content to download.');
+    }
 }
 
 function loadNote() {
