@@ -58,14 +58,48 @@ function saveNote() {
         const compressedNote = compress(encryptedNote);
         const newUrl = `${window.location.origin}${window.location.pathname}?note=${encodeURIComponent(compressedNote)}`;
         window.history.pushState({}, '', newUrl);
-        alert('Note saved! Share the URL to access the note.');
-        
+
         // Save to history
         let history = getCookie('noteHistory');
         history = history ? JSON.parse(history) : [];
         history.push({ url: newUrl, date: new Date().toLocaleString() });
         setCookie('noteHistory', JSON.stringify(history), 365);
+
+        // Show the popup
+        showPopup(newUrl);
+
+        // Download the note as a text file
+        downloadNoteAsTxt(note);
     }
+}
+
+function showPopup(url) {
+    const popup = document.createElement('div');
+    popup.style.position = 'fixed';
+    popup.style.bottom = '20px';
+    popup.style.right = '20px';
+    popup.style.padding = '10px';
+    popup.style.backgroundColor = '#5e5e5e';
+    popup.style.color = '#f5f5f5';
+    popup.style.borderRadius = '5px';
+    popup.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.5)';
+    popup.innerText = 'Note saved! Click to copy link.';
+    popup.onclick = () => {
+        navigator.clipboard.writeText(url);
+        popup.innerText = 'Link copied!';
+        setTimeout(() => document.body.removeChild(popup), 2000);
+    };
+    document.body.appendChild(popup);
+}
+
+function downloadNoteAsTxt(note) {
+    const blob = new Blob([note], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'note.txt';
+    a.click();
+    URL.revokeObjectURL(url);
 }
 
 function loadNote() {
