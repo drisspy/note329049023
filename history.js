@@ -1,3 +1,5 @@
+let isNoteDecrypted = false;
+
 function encrypt(text, key) {
     let encrypted = '';
     for (let i = 0; i < text.length; i++) {
@@ -67,6 +69,9 @@ function saveNote() {
 
         // Show the popup
         showPopup(newUrl);
+
+        // Enable download button
+        document.getElementById('download-btn').style.display = 'none';
     }
 }
 
@@ -91,7 +96,7 @@ function showPopup(url) {
 
 function downloadNoteAsTxt() {
     const note = document.getElementById('note').value;
-    if (note) {
+    if (note && isNoteDecrypted) {
         const blob = new Blob([note], { type: 'text/plain' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -113,6 +118,8 @@ function loadNote() {
         if (key) {
             const decryptedNote = decrypt(encryptedNote, key);
             document.getElementById('note').value = decryptedNote;
+            isNoteDecrypted = true;
+            document.getElementById('download-btn').style.display = 'inline';
         }
     }
 }
