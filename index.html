@@ -10,7 +10,7 @@
     <h1>Encrypted Notepad</h1>
     <textarea id="note" placeholder="Write your note here..."></textarea>
     <button onclick="saveNote()">Save Note</button>
-    <button onclick="downloadNoteAsTxt()">Download Note</button>
+    <button id="download-btn" onclick="downloadNoteAsTxt()" style="display:none;">Download Note</button>
     <button onclick="loadHistory()">Show History</button>
     <div class="note-history" id="note-history"></div>
     <script src="history.js"></script>
