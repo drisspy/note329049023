@@ -69,9 +69,6 @@ function saveNote() {
 
         // Show the popup
         showPopup(newUrl);
-
-        // Enable download button
-        document.getElementById('download-btn').style.display = 'none';
     }
 }
 
@@ -94,21 +91,6 @@ function showPopup(url) {
     document.body.appendChild(popup);
 }
 
-function downloadNoteAsTxt() {
-    const note = document.getElementById('note').value;
-    if (note && isNoteDecrypted) {
-        const blob = new Blob([note], { type: 'text/plain' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'note.txt';
-        a.click();
-        URL.revokeObjectURL(url);
-    } else {
-        alert('No note content to download.');
-    }
-}
-
 function loadNote() {
     const urlParams = new URLSearchParams(window.location.search);
     const compressedNote = urlParams.get('note');
@@ -119,7 +101,6 @@ function loadNote() {
             const decryptedNote = decrypt(encryptedNote, key);
             document.getElementById('note').value = decryptedNote;
             isNoteDecrypted = true;
-            document.getElementById('download-btn').style.display = 'inline';
         }
     }
 }
