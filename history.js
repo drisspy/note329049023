@@ -67,9 +67,6 @@ function saveNote() {
 
         // Show the popup
         showPopup(newUrl);
-
-        // Download the note as a text file
-        downloadNoteAsTxt(note);
     }
 }
 
@@ -92,7 +89,8 @@ function showPopup(url) {
     document.body.appendChild(popup);
 }
 
-function downloadNoteAsTxt(note) {
+function downloadNoteAsTxt() {
+    const note = document.getElementById('note').value;
     const blob = new Blob([note], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
